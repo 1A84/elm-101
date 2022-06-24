@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: #666;
+}
+
+.container {
+  margin: auto;
+  width: 60%;
+  background-color: #fff;
+  height: 100%;
+  display: flex;
+}
+
+select {
+  margin: auto;
+}
+
+.img_wrapper {
+  width: 40%;
+  height: auto;
+  max-height: 100%;
+  margin: auto 0 auto 0;
+}
+
+.thumbnail {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  /* background-image: url('/lain.jpg'); */
+}
