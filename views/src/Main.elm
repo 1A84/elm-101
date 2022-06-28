@@ -64,7 +64,7 @@ view model =
       , option [ value "none" ] [ text "None" ]
       ]
       , div [ class "img_wrapper" ] [
-          img [ class "thumbnail", src ("/images/" ++ (ex model) ) ] []
+          img [ class "thumbnail", src ("/images/" ++ model.img ) ] []
         -- node "picture" [ class "thumbnail" ] [
         --   source [ secret (model.img ++ ".jpg") ] []
         --   , source [] []
