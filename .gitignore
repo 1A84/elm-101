@@ -14,3 +14,4 @@ start_server
 /node_modules
 yarn-error.log
 elm-stuff/
+main.js
