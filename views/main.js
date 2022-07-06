@@ -4370,6 +4370,12 @@ function _Browser_load(url)
 		}
 	}));
 }
+var $author$project$Main$LinkClicked = function (a) {
+	return {$: 'LinkClicked', a: a};
+};
+var $author$project$Main$UrlChanged = function (a) {
+	return {$: 'UrlChanged', a: a};
+};
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
@@ -5158,17 +5164,97 @@ var $elm$core$Task$perform = F2(
 			$elm$core$Task$Perform(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
-var $elm$browser$Browser$element = _Browser_element;
+var $elm$browser$Browser$application = _Browser_application;
+var $author$project$Main$Select = {$: 'Select'};
+var $author$project$Main$Slide = {$: 'Slide'};
+var $author$project$Main$fromUrl = function (url) {
+	var _v0 = url.path;
+	switch (_v0) {
+		case '/1.0':
+			return $author$project$Main$Select;
+		case '/2.0':
+			return $author$project$Main$Slide;
+		default:
+			return $author$project$Main$Select;
+	}
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$Main$init = function (_v0) {
+var $author$project$Shared$init = function (_v0) {
 	return _Utils_Tuple2(
 		{img: 'lain'},
 		$elm$core$Platform$Cmd$none);
 };
+var $author$project$Main$init = F3(
+	function (flags, url, key) {
+		var _v0 = $author$project$Shared$init(_Utils_Tuple0);
+		var shared = _v0.a;
+		var sharedCmd = _v0.b;
+		return _Utils_Tuple2(
+			{
+				key: key,
+				route: $author$project$Main$fromUrl(url),
+				shared: shared
+			},
+			$elm$core$Platform$Cmd$none);
+	});
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$update = F2(
+var $elm$browser$Browser$Navigation$load = _Browser_load;
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
+var $author$project$Main$toString = function (r) {
+	if (r.$ === 'Select') {
+		return '/1.0';
+	} else {
+		return '/2.0';
+	}
+};
+var $elm$url$Url$addPort = F2(
+	function (maybePort, starter) {
+		if (maybePort.$ === 'Nothing') {
+			return starter;
+		} else {
+			var port_ = maybePort.a;
+			return starter + (':' + $elm$core$String$fromInt(port_));
+		}
+	});
+var $elm$url$Url$addPrefixed = F3(
+	function (prefix, maybeSegment, starter) {
+		if (maybeSegment.$ === 'Nothing') {
+			return starter;
+		} else {
+			var segment = maybeSegment.a;
+			return _Utils_ap(
+				starter,
+				_Utils_ap(prefix, segment));
+		}
+	});
+var $elm$url$Url$toString = function (url) {
+	var http = function () {
+		var _v0 = url.protocol;
+		if (_v0.$ === 'Http') {
+			return 'http://';
+		} else {
+			return 'https://';
+		}
+	}();
+	return A3(
+		$elm$url$Url$addPrefixed,
+		'#',
+		url.fragment,
+		A3(
+			$elm$url$Url$addPrefixed,
+			'?',
+			url.query,
+			_Utils_ap(
+				A2(
+					$elm$url$Url$addPort,
+					url.port_,
+					_Utils_ap(http, url.host)),
+				url.path)));
+};
+var $author$project$Shared$update = F2(
 	function (msg, model) {
 		var img = msg.a;
 		return _Utils_Tuple2(
@@ -5177,8 +5263,62 @@ var $author$project$Main$update = F2(
 				{img: img}),
 			$elm$core$Platform$Cmd$none);
 	});
-var $author$project$Main$LabelChanged = function (a) {
+var $author$project$Main$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'UrlChanged':
+				var url = msg.a;
+				return (!_Utils_eq(
+					url.path,
+					$author$project$Main$toString(model.route))) ? _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							route: $author$project$Main$fromUrl(url)
+						}),
+					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							route: $author$project$Main$fromUrl(url)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'SharedMsg':
+				var sMsg = msg.a;
+				var _v1 = A2($author$project$Shared$update, sMsg, model.shared);
+				var shared = _v1.a;
+				var sharedCmd = _v1.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{shared: shared}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var req = msg.a;
+				if (req.$ === 'Internal') {
+					var url = req.a;
+					return _Utils_Tuple2(
+						model,
+						A2(
+							$elm$browser$Browser$Navigation$pushUrl,
+							model.key,
+							$elm$url$Url$toString(url)));
+				} else {
+					var href = req.a;
+					return _Utils_Tuple2(
+						model,
+						$elm$browser$Browser$Navigation$load(href));
+				}
+		}
+	});
+var $author$project$Main$SharedMsg = function (a) {
+	return {$: 'SharedMsg', a: a};
+};
+var $author$project$Shared$LabelChanged = function (a) {
 	return {$: 'LabelChanged', a: a};
+};
+var $author$project$Shared$changeImg = function (a) {
+	return A2($elm$json$Json$Decode$map, $author$project$Shared$LabelChanged, a);
 };
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -5190,7 +5330,6 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5204,104 +5343,134 @@ var $elm$html$Html$Events$on = F2(
 	});
 var $elm$html$Html$option = _VirtualDom_node('option');
 var $elm$html$Html$select = _VirtualDom_node('select');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Pages$Select$valueDecoder = A2(
+	$elm$json$Json$Decode$field,
+	'currentTarget',
+	A2($elm$json$Json$Decode$field, 'value', $elm$json$Json$Decode$string));
+var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$valueDecoder = A2(
-	$elm$json$Json$Decode$field,
-	'currentTarget',
-	A2($elm$json$Json$Decode$field, 'value', $elm$json$Json$Decode$string));
-var $author$project$Main$view = function (model) {
+var $author$project$Shared$viewImage = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$class('container')
+				$elm$html$Html$Attributes$class('img_wrapper')
 			]),
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$select,
+				$elm$html$Html$img,
 				_List_fromArray(
 					[
-						A2(
-						$elm$html$Html$Events$on,
-						'change',
-						A2($elm$json$Json$Decode$map, $author$project$Main$LabelChanged, $author$project$Main$valueDecoder))
+						$elm$html$Html$Attributes$class('thumbnail'),
+						$elm$html$Html$Attributes$src('/images/' + model.img)
 					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$value('lain')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Lain')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$value('audrey_tang')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Audrey Tang')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$value('chino-chan')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('Chino-chan')
-							])),
-						A2(
-						$elm$html$Html$option,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$value('none')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('None')
-							]))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('img_wrapper')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('thumbnail'),
-								$elm$html$Html$Attributes$src('/images/' + model.img)
-							]),
-						_List_Nil)
-					]))
+				_List_Nil)
 			]));
 };
-var $author$project$Main$main = $elm$browser$Browser$element(
+var $author$project$Pages$Select$view = F2(
+	function (toMsg, model) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('container')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$select,
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$Events$on,
+							'change',
+							A2(
+								$elm$json$Json$Decode$map,
+								toMsg,
+								$author$project$Shared$changeImg($author$project$Pages$Select$valueDecoder)))
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$option,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$value('lain')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Lain')
+								])),
+							A2(
+							$elm$html$Html$option,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$value('audrey_tang')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Audrey Tang')
+								])),
+							A2(
+							$elm$html$Html$option,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$value('chino-chan')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Chino-chan')
+								])),
+							A2(
+							$elm$html$Html$option,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$value('none')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('None')
+								]))
+						])),
+					$author$project$Shared$viewImage(model)
+				]));
+	});
+var $author$project$Main$view = function (model) {
+	var _v0 = model.route;
+	if (_v0.$ === 'Select') {
+		return {
+			body: _List_fromArray(
+				[
+					A2($author$project$Pages$Select$view, $author$project$Main$SharedMsg, model.shared)
+				]),
+			title: 'Elm'
+		};
+	} else {
+		return {
+			body: _List_fromArray(
+				[
+					A2($author$project$Pages$Select$view, $author$project$Main$SharedMsg, model.shared)
+				]),
+			title: 'Elm'
+		};
+	}
+};
+var $author$project$Main$main = $elm$browser$Browser$application(
 	{
 		init: $author$project$Main$init,
+		onUrlChange: $author$project$Main$UrlChanged,
+		onUrlRequest: $author$project$Main$LinkClicked,
 		subscriptions: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
