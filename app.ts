@@ -14,6 +14,7 @@ app.listen(port, () => {
 
 app.get("/", (req, res) => { res.redirect("/1.0") })
 app.get('/1.0', (req, res) => { res.sendFile("./views/index.html", { root: __dirname }) });
+app.get('/2.0', (req, res) => { res.sendFile("./views/index.html", { root: __dirname }) });
 app.get("/main.js", (req, res) => { res.sendFile("./views/main.js", { root: __dirname }) })
 app.get("/main.css", (req, res) => { res.sendFile("./views/main.css", { root: __dirname }) })
 
