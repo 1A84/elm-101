@@ -48,4 +48,20 @@ select {
   color: #666;
   align-items: center;
   align-content: center;
+  display: flex;
+}
+
+.link > a {
+  margin: auto;
+  width: auto;
+
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+a:hover {
+  text-decoration: underline;
 }
