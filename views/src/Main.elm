@@ -10,7 +10,7 @@ import Url exposing (..)
 import Url.Parser exposing ( oneOf, map )
 
 import Shared exposing (..)
-import Route exposing (Route (..), toString, fromUrl)
+import Route exposing (Route (..), fromUrl, toPath, label)
 import Bar exposing (..)
 -- import Route exposing ( Route, fromUrl )
 import Pages.Select as Select exposing ( view )
@@ -74,7 +74,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         UrlChanged url ->
-            if url.path /= Route.toString model.route then
+            if url.path /= Route.toPath model.route then
                 ( { model | route = fromUrl url }
                 , Cmd.none
                 )
@@ -122,9 +122,10 @@ view model  =
             -- div [ class "container" ]
             -- [
             { title = "Elm"
-            , body = [ container [
-                Bar.view model.route
-                , Select.view SharedMsg model.shared
+            , body = [
+                container [
+                    Bar.view model.route
+                    , Select.view SharedMsg model.shared
                 ]
             ]
             }
@@ -149,8 +150,12 @@ view model  =
         Slide ->
             -- Select.view SharedMsg model.shared
             { title = "Elm"
-            , body = [ container [ Bar.view model.route
-            , Slide.view SharedMsg model.shared model.slide] ]
+            , body = [
+                container [
+                    Bar.view model.route
+                    , Slide.view SharedMsg model.shared model.slide
+                ]
+            ]
             }
             -- div [ class "container" ]
             --     [ Html.map <| Select.view model.shared ]

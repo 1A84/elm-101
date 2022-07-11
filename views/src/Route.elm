@@ -1,4 +1,4 @@
-module Route exposing (Route (..), fromUrl, toString)
+module Route exposing (Route (..), fromUrl, toPath, label)
 import Url exposing (Url)
 
 
@@ -19,11 +19,19 @@ fromUrl url =
         _ ->
             Select
 
-toString : Route -> String
-toString r =
+toPath : Route -> String
+toPath r =
     case r of
         Select ->
             "/1.0"
 
         Slide ->
             "/2.0"
+
+label : Route -> String
+label r =
+    case r of
+        Select ->
+            "Ver 2.0"
+        Slide ->
+            "Ver 1.0"
