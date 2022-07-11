@@ -9,30 +9,6 @@ import Shared exposing (..)
 
 
 
--- UPDATE
-
-
--- type Msg = NoOp
-
-
--- update : Msg -> Model -> ( Model, Cmd Msg )
--- update _ model =
---     (model, Cmd.none)
--- type Msg = LabelChanged String
--- type Msg = LabelChanged String
-
-
--- update : Msg -> Model -> ( Model, Cmd Msg )
--- update msg model =
---     case msg of
---         LabelChanged img ->
---         --     ( { model | img = img }
---         --     , Cmd.none
---         --     )
---             Shared.update (Shared.Msg img) model
-
-
-
 -- VIEW
 
 
@@ -58,18 +34,3 @@ view toMsg model =
 valueDecoder : D.Decoder String
 valueDecoder =
     D.field "currentTarget" (D.field "value" D.string)
-
--- ex : Model -> String
--- ex model =
---     case model.img of 
---         "lain" ->
---             model.img ++ ".jpg"
-
---         "audrey_tang" ->
---             model.img ++".jpeg"
-        
---         "chino-chan" ->
---             model.img ++ ".jpg"
-
---         _ ->
---             "null"
