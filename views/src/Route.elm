@@ -1,4 +1,4 @@
-module Route exposing (Route, fromUrl, toString)
+module Route exposing (Route (..), fromUrl, toString)
 import Url exposing (Url)
 
 
