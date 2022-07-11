@@ -4,7 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 
-import Route exposing (Route (..), toString )
+import Route exposing (Route (..), toPath, label )
 
 view : Route -> Html msg
 view r =
@@ -12,8 +12,8 @@ view r =
     [
         case r of
             Select -> 
-                a [ href (toString Slide) ] [ text "2.0" ]
+                a [ href (toPath Slide) ] [ text (Route.label r) ]
             
             Slide ->
-                a [ href (toString Select) ] [ text "1.0" ]
+                a [ href (toPath Select) ] [ text (Route.label r) ]
     ]
