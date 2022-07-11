@@ -14,7 +14,7 @@ import Shared exposing (..)
 
 view : (Shared.Msg -> msg) -> Model -> Html msg
 view toMsg model =
-    div [ class "container" ]
+    div [ class "view" ]
         [
         select
             [ on "change" (D.map toMsg (Shared.changeImg valueDecoder)) ]
