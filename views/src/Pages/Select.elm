@@ -4,7 +4,6 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Json.Decode as D
-import Json.Encode as E
 
 import Shared exposing (..)
 
@@ -60,17 +59,17 @@ valueDecoder : D.Decoder String
 valueDecoder =
     D.field "currentTarget" (D.field "value" D.string)
 
-ex : Model -> String
-ex model =
-    case model.img of 
-        "lain" ->
-            model.img ++ ".jpg"
+-- ex : Model -> String
+-- ex model =
+--     case model.img of 
+--         "lain" ->
+--             model.img ++ ".jpg"
 
-        "audrey_tang" ->
-            model.img ++".jpeg"
+--         "audrey_tang" ->
+--             model.img ++".jpeg"
         
-        "chino-chan" ->
-            model.img ++ ".jpg"
+--         "chino-chan" ->
+--             model.img ++ ".jpg"
 
-        _ ->
-            "null"
+--         _ ->
+--             "null"
