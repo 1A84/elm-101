@@ -4,12 +4,13 @@ body {
   width: 100%;
   background-color: #666;
 }
-
 .container {
   margin: auto;
   width: 60%;
-  background-color: #fff;
   height: 100%;
+  background-color: #fff;
+}
+.view {
   display: flex;
 }
 
@@ -30,4 +31,11 @@ select {
   width: auto;
   height: auto;
   /* background-image: url('/lain.jpg'); */
+}
+
+.slide_btn {
+  width: 2em;
+  height: 2em;
+  margin: auto;
+  /* padding: 1em 1em 1em 1em; */
 }
