@@ -6,6 +6,7 @@ import Html.Events exposing (..)
 import Json.Decode as D
 
 import Shared exposing (..)
+import Image exposing (..)
 
 
 
@@ -19,11 +20,9 @@ view toMsg model =
         select
             [ on "change" (D.map toMsg (Shared.changeImg valueDecoder)) ]
             -- [ on "change" (Shared.update model <| valueDecoder )]
-            [ option [ value "lain" ] [ text "Lain" ]
-            , option [ value "audrey_tang" ] [ text "Audrey Tang" ]
-            , option [ value "chino-chan" ] [ text "Chino-chan" ]
-            , option [ value "none" ] [ text "None" ]
-            ]
+            (List.map (\n -> option [ value (Image.toString n) ] [ text (Image.label n) ]) Shared.slide)
+            -- , option [ value "none" ] [ text "None" ]
+            -- ]
             , viewImage model
                 -- node "picture" [ class "thumbnail" ] [
                 --   source [ secret (model.img ++ ".jpg") ] []
