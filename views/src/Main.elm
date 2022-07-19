@@ -5,6 +5,7 @@ import Browser.Navigation as Nav
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Json.Decode as D
 
 import Url exposing (..)
 import Url.Parser exposing ( oneOf, map )
@@ -12,9 +13,12 @@ import Url.Parser exposing ( oneOf, map )
 import Shared exposing (..)
 import Route exposing (Route (..), fromUrl, toPath, label)
 import Bar exposing (..)
+import Key exposing (..)
 -- import Route exposing ( Route, fromUrl )
 import Pages.Select as Select exposing ( view )
 import Pages.Slide as Slide exposing ( view )
+import Browser.Events exposing (onKeyUp)
+import Browser.Events exposing (onKeyPress)
 
 
 
@@ -28,7 +32,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , onUrlChange = UrlChanged
         , onUrlRequest = LinkClicked
         }
@@ -60,19 +64,46 @@ init flags url key =
     )
   
 
+type Key
+    = ArrowL
+    | ArrowR
+
+
+subscriptions : Model -> Sub Msg
+subscriptions m =
+    -- Sub.none
+    keyEv m
+    -- onKeyPress (D.succeed)
+
+
+keyEv : Model -> Sub Msg
+keyEv m =
+    case m.route of
+        Route.Slide ->
+            onKeyPress (D.map KeyPressed keyDecoder)
+
+        _ -> Sub.none
+
+
+
+
 
 -- UPDATE
 
 
 type Msg
-    = UrlChanged Url
+    = NoOp
+    | UrlChanged Url
     | LinkClicked Browser.UrlRequest
     | SharedMsg Shared.Msg
+    | KeyPressed KeyCap
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        NoOp -> (model, Cmd.none)
+
         UrlChanged url ->
             if url.path /= Route.toPath model.route then
                 ( { model | route = fromUrl url }
@@ -100,6 +131,46 @@ update msg model =
                     ( model, Nav.pushUrl model.key (Url.toString url))
                 Browser.External href ->
                     ( model, Nav.load href)
+        
+        KeyPressed kc ->
+            case kc of
+                Arrow L ->
+                    let
+                        ( shared, sharedCmd ) =
+                            Shared.update ( Shared.left Shared.slide ) model.shared
+                    in
+                    ({ model | shared = shared }
+                    , Cmd.none
+                    )
+                
+                Arrow R ->
+                    let
+                        ( shared, sharedCmd ) =
+                            Shared.update ( Shared.right Shared.slide ) model.shared
+                    in
+                    ({ model | shared = shared }
+                    , Cmd.none
+                    )
+                
+                Character 'b' ->
+                    let
+                        ( shared, sharedCmd ) =
+                            Shared.update ( Shared.left Shared.slide ) model.shared
+                    in
+                    ({ model | shared = shared }
+                    , Cmd.none
+                    )
+
+                Character 'n' ->
+                    let
+                        ( shared, sharedCmd ) =
+                            Shared.update ( Shared.right Shared.slide ) model.shared
+                    in
+                    ({ model | shared = shared }
+                    , Cmd.none
+                    )
+                
+                _ -> ( model, Cmd.none )
         
         -- SlideMsg slide ->
         --     let
