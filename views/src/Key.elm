@@ -1,11 +1,12 @@
 module Key exposing (
     Direction(..), KeyCap(..)
-    , keyDecoder, toKey )
+    , keyDecoder, toKey, fromKeyCode, output, view, keyView )
 
 import Json.Decode as D
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Debug exposing (toString)
+import Html.Events exposing (keyCode)
 
 
 type Direction
@@ -23,6 +24,21 @@ type KeyCap
 keyDecoder : D.Decoder KeyCap
 keyDecoder =
     D.map toKey (D.field "key" D.string)
+    -- D.map fromKeyCode (D.field "keyCode" D.int)
+
+
+
+fromKeyCode : Int -> KeyCap
+fromKeyCode n =
+    case n of
+        37 ->
+            Arrow L
+
+        39 ->
+            Arrow R
+        
+        _ -> Control ""
+
 
 
 toKey : String -> KeyCap
@@ -38,6 +54,18 @@ toKey kv =
             Arrow U
 
         "ArrowDown" ->
+            Arrow D
+
+        "Left" ->
+            Arrow L
+
+        "Right" ->
+            Arrow R
+
+        "Up" ->
+            Arrow U
+
+        "Down" ->
             Arrow D
         
         _ ->
@@ -87,3 +115,8 @@ view : KeyCap -> Html msg
 view k =
     div []
     [ text ( output k) ]
+
+keyView : String -> Html msg
+keyView s =
+    div []
+    [ text s ]
