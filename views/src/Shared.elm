@@ -22,7 +22,7 @@ type alias Slide = List Img
 
 slide : Slide
 slide =
-    [ Lain, AudreyTang, ChinoChan ]
+    [ Lain, AudreyTang, ChinoChan, AnyaForger, ShimaRin ]
 
 -- INIT
 
