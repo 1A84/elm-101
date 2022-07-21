@@ -9,6 +9,8 @@ type Img
     = Lain
     | AudreyTang
     | ChinoChan
+    | AnyaForger
+    | ShimaRin
 
 -- index : Img -> Int
 -- index img =
@@ -26,6 +28,10 @@ toString name =
 
         ChinoChan -> "chino-chan"
 
+        AnyaForger -> "anya_forger"
+
+        ShimaRin -> "shima_rin"
+
 
 fromString : String -> Img
 fromString str = 
@@ -35,6 +41,10 @@ fromString str =
         "audrey_tang" -> AudreyTang
 
         "chino-chan" -> ChinoChan
+
+        "anya_forger" -> AnyaForger
+
+        "shima_rin" -> ShimaRin
 
         _ -> Lain
 
@@ -47,6 +57,10 @@ label name =
         AudreyTang -> "Audrey Tang"
 
         ChinoChan -> "Chino chan"
+
+        AnyaForger -> "Anya Forger"
+
+        ShimaRin -> "Shima Rin"
 
 
 img : Img -> String
