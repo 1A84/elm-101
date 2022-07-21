@@ -21,3 +21,5 @@ app.get("/main.css", (req, res) => { res.sendFile("./views/main.css", { root: __
 app.get("/images/lain", (req, res) => { res.sendFile("images/lain.jpg", { root: __dirname }) })
 app.get("/images/audrey_tang", (req, res) => { res.sendFile("images/audrey_tang.jpeg", { root: __dirname }) })
 app.get("/images/chino-chan", (req, res) => { res.sendFile("images/chino-chan.jpg", { root: __dirname }) })
+app.get("/images/anya_forger", (req, res) => { res.sendFile("images/anya_forger.png", { root: __dirname }) })
+app.get("/images/shima_rin", (req, res) => { res.sendFile("images/shima_rin.png", { root: __dirname }) })
