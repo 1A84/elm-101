@@ -6,6 +6,8 @@ import Html.Events exposing (..)
 import List exposing ( tail )
 import Maybe.Extra as MaybeNg exposing (..)
 import List.Extra as List exposing (..)
+import Browser.Events exposing (onKeyUp)
+import Json.Decode as D
 
 import Image exposing (..)
 import Shared exposing ( Model, Msg, Slide )
@@ -22,7 +24,11 @@ view toMsg model slide =
             button [ class "slide_btn left_btn" ] [ text "|" ]
 
           else
-            button [ class "slide_btn left_btn", onClick (toMsg (Shared.left slide) ) ] [ text "<" ]
+            button [
+                class "slide_btn left_btn"
+                , onClick (toMsg (Shared.left slide) )
+            ]
+            [ text "<" ]
 
         , viewImage model
 
