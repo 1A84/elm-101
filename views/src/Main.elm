@@ -14,6 +14,7 @@ import Shared exposing (..)
 import Route exposing (Route (..), fromUrl, toPath, label)
 import Bar exposing (..)
 import Key exposing (..)
+import Notify exposing (..)
 -- import Route exposing ( Route, fromUrl )
 import Pages.Select as Select exposing ( view )
 import Pages.Slide as Slide exposing ( view )
@@ -46,6 +47,7 @@ type alias Model =
     , shared : Shared.Model
     , key : Nav.Key
     , slide : Shared.Slide
+    , notices : Notify.Stack
     }
 
 init : () -> Url -> Nav.Key -> (Model, Cmd Msg)
@@ -53,12 +55,12 @@ init flags url key =
     let
         ( shared, sharedCmd ) =
             Shared.init ()
-
     in
     ({ route = fromUrl url
     , shared = shared
     , key = key
     , slide = Shared.slide
+    , notices = []
     }
     , Cmd.none
     )
@@ -129,6 +131,7 @@ update msg model =
                     -- , Cmd.none
                     -- )
                     ( model, Nav.pushUrl model.key (Url.toString url))
+
                 Browser.External href ->
                     ( model, Nav.load href)
         
@@ -139,7 +142,8 @@ update msg model =
                         ( shared, sharedCmd ) =
                             Shared.update ( Shared.left Shared.slide ) model.shared
                     in
-                    ({ model | shared = shared }
+                    -- ({ model | notices = (List.append [(Notify.N 0 k)] model.notices)}, Cmd.none )
+                    ({ model | shared = shared, notices = (List.append [(Notify.N 0 (Key.output (Arrow L)))] model.notices) }
                     , Cmd.none
                     )
                 
@@ -170,7 +174,13 @@ update msg model =
                     , Cmd.none
                     )
                 
-                _ -> ( model, Cmd.none )
+                Control k ->
+                    ({ model | notices = (List.append [(Notify.N 0 k)] model.notices)}, Cmd.none )
+
+                Character c ->
+                    ({ model | notices = (List.append [(Notify.N 0 (String.fromChar c) ) ] model.notices)}, Cmd.none )
+
+                _ -> (model, Cmd.none)
         
         -- SlideMsg slide ->
         --     let
@@ -225,6 +235,7 @@ view model  =
                 container [
                     Bar.view model.route
                     , Slide.view SharedMsg model.shared model.slide
+                    , Notify.view model.notices
                 ]
             ]
             }
