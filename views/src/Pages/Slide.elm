@@ -9,6 +9,8 @@ import List.Extra as List exposing (..)
 import Browser.Events exposing (onKeyUp)
 import Json.Decode as D
 
+import Keyboard exposing (..)
+
 import Image exposing (..)
 import Shared exposing ( Model, Msg, Slide )
 import Shared exposing (viewImage)
@@ -30,7 +32,10 @@ view toMsg model slide =
             ]
             [ text "<" ]
 
-        , viewImage model
+        , div [ class "frame" ]
+        [ viewImage model
+        , viewLabel model.img
+        ]
 
         , if isTail model slide then
             button [ class "slide_btn right_btn" ] [ text "|" ]
