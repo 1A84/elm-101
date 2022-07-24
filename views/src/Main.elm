@@ -21,6 +21,7 @@ import Pages.Slide as Slide exposing ( view )
 import Browser.Events exposing (onKeyUp)
 import Browser.Events exposing (onKeyPress)
 import Dict exposing (keys)
+import Dict exposing (isEmpty)
 
 
 
@@ -274,10 +275,14 @@ view model  =
 
 viewKey : List Key -> Html msg
 viewKey lk =
-    div [ class "toasty" ] [
-        div [ class "keycap_toast"]
-        (List.map (\n -> div [ class "keycap_sym"] [ text (Debug.toString n) ] ) <| lk)
-    ]
+    if List.isEmpty lk then
+        text ""
+
+    else 
+        div [ class "toasty" ] [
+            div [ class "keycap_toast"]
+            (List.map (\n -> div [ class "keycap_sym"] [ text (Debug.toString n) ] ) <| lk)
+        ]
     
 
 
