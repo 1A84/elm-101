@@ -1,4 +1,7 @@
-module Image exposing (Img (..), toString, fromString, label, img)
+module Image exposing (Img (..), toString, fromString, label, img, viewLabel)
+
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 -- type alias Img =
 --     { label : Label
@@ -66,3 +69,7 @@ label name =
 img : Img -> String
 img l =
     "/images/" ++ toString l
+
+viewLabel : Img -> Html msg
+viewLabel i =
+    h2 [ class "img_label" ] [ text (label i) ]
