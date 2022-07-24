@@ -26,6 +26,7 @@ view : Stack -> Html msg
 view s =
     if List.isEmpty s then
         text ""
+
     else
         div [] <| (List.map (\n -> div [] [ text n.msg ]) s)
         -- (\n -> div [] [ text n.msg ] <| s)
