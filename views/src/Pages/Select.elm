@@ -21,7 +21,8 @@ view toMsg model =
             [ on "change" (D.map toMsg (Shared.changeImg valueDecoder)) ]
             -- [ on "change" (Shared.update model <| valueDecoder )]
             (List.map (\n -> option [ value (Image.toString n) ] [ text (Image.label n) ]) Shared.slide)
-            , viewImage model
+            , div [ class "frame" ]
+            [ viewImage model ]
         ]
 
 
