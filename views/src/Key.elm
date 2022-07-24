@@ -21,11 +21,14 @@ type KeyCap
     | Control String
 
 
-keyDecoder : D.Decoder KeyCap
-keyDecoder =
-    D.map toKey (D.field "key" D.string)
+-- keyDecoder : D.Decoder KeyCap
+-- keyDecoder =
+--     D.map toKey (D.field "key" D.string)
     -- D.map fromKeyCode (D.field "keyCode" D.int)
 
+keyDecoder : D.Decoder String
+keyDecoder =
+    D.map (\n -> n) (D.field "key" D.string)
 
 
 fromKeyCode : Int -> KeyCap
