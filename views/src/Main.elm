@@ -20,8 +20,6 @@ import Pages.Select as Select exposing ( view )
 import Pages.Slide as Slide exposing ( view )
 import Browser.Events exposing (onKeyUp)
 import Browser.Events exposing (onKeyPress)
-import Dict exposing (keys)
-import Dict exposing (isEmpty)
 
 
 
@@ -281,9 +279,22 @@ viewKey lk =
     else 
         div [ class "toasty" ] [
             div [ class "keycap_toast"]
-            (List.map (\n -> div [ class "keycap_sym"] [ text (Debug.toString n) ] ) <| lk)
+            (List.map (\n -> div [ class "keycap_sym"] [ text (toStr n) ] ) <| lk)
         ]
     
+
+
+toStr : Key -> String
+toStr k =
+    case k of
+        ArrowLeft ->
+            "<-"
+
+        ArrowRight ->
+            "->"
+        
+        _ -> ""
+        
 
 
     
